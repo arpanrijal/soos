@@ -1,0 +1,285 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ;
+}
+body,html{
+    width: 100dvw;
+    height: 99dvh;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+}
+.navbar{
+    width: 100dvw;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(241, 241, 241);
+}
+.navbar ul{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style-type: none;
+    gap: 20px;
+    margin: 10px 20px;
+}
+.navbar ul li{
+    cursor: pointer;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.navbar ul li a:hover{
+    color: #1976d2;
+}
+
+.navbar ul li a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #1976d2;
+}
+
+.navbar ul li:nth-child(2) {
+    margin-left: auto;
+}
+
+/* Light Mode Navbar Button */
+.navbar button {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.navbar button:hover {
+    background-color: #e8e8e8;
+    border-color: #bbb;
+}
+
+.container{
+    padding: 10px 10px 10px 10px;
+    margin: 30px 2px;
+    width: 95%;
+    height: auto;
+    background-color: #f0f8ff;
+    border-radius: 20px;
+    box-shadow: 2px 1px 15px 0.2px rgba(0, 0, 0, 0.151);
+}
+/* .container:hover{
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(1.02);
+} */
+.title{
+    font-weight: 600;
+    font-size:large;
+    text-align: center;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+}
+.taskinput{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    
+}
+.titleoftask{
+    margin-left: 20px;
+
+}
+.inputfield{
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 3px;
+    width: 95%;
+    height: 20px;
+    padding: 20px 5px;
+    border-width: 1px;
+    
+}
+.taskinput button{
+    margin-top: 30px;
+    padding: 10px;
+    width: 50%;
+    border-radius: 10px;
+    background-color: rgb(0, 119, 255);
+    border-width: 1px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: rgb(247, 247, 247);
+    border: none;
+    font-weight: 500;
+}
+.butt{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.todolist{
+    display: flex;
+    justify-content: flex-start !important;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 95%;
+    height: auto;
+    background-color: rgba(237, 232, 255, 0.705);
+    border-radius: 30px;
+    padding: 10px 10px 10px 10px;
+    margin: 30px 2px;
+}
+.todolisttitle{
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+.tasks{
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 1px 1px 4px 1px rgba(128, 128, 128, 0.171);
+}
+.tasks .title{
+    display: flex;
+    flex-wrap: wrap;
+    width: 75%;
+    justify-content: flex-start;
+}
+.editbtn,.delbtn,.updbtn, .canbtn{
+    padding: 12px 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    max-height: 45px !important;
+}
+.delbtn{
+    margin-left: 10px;
+    background-color: #ffeaea;
+    border: none;
+    color: #d10000;
+}
+.editbtn{
+    background-color: #e0f7fa;
+    border: none;
+    color: #0077c2;
+}
+.creationDate, .modifiedDate{
+    font-size: 12px;
+    font-weight: 500;
+    color: gray;
+}
+.updbtn{
+    background-color: hsl(135, 100%, 94%);
+    color: #007e33;
+}
+.canbtn{
+    background-color: #f4e7ff;
+    color: #7e00c2;
+}
+.updbtn, .canbtn{
+    gap: 20px;
+    border: none;
+}
+.hidden{
+    display: none !important;
+}
+.btnsforaction{
+    display: flex;
+    gap: 12px;
+}
+.editinputfield{
+    width: 95%;
+    height: 10px;
+    padding: 20px 5px;
+    font-weight: 600;
+    font-size:medium;
+    box-shadow: none;
+    outline-style: none;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+.dates_for_creation_and_updates{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 20px;
+    margin-top: 10px;
+}
+.error-msg {
+  color: #ad1515;
+  font-size: 14px;
+  text-align: left !important;
+  margin-top: 6px;
+  padding: 8px 12px 8px 10px;
+  background-color: #ffe6e6;
+  border-left: 4px solid #f14527;
+  border-radius: 4px;
+  font-weight: 400;
+  line-height: 1.4;
+  width: 80%;
+}
+
+.imguploadbtn{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100%;
+    height: 100%;
+}
+
+.imageupload{
+    margin-top: 30px;
+    border: 2px dashed rgba(134, 134, 134, 0.452);
+    min-height: 3dvh;
+    height: 30dvh;
+    max-height: 35dvh;
+}
+.upload_Butt{
+    display: flex;
+    justify-content: center;
+}
+.thumbnail_size{
+    width: 100px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.allFile_plus_FileInfo{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.fileInfowithSizeandDate{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+.sharebutton{
+    color: #8B5CF6;
+    background-color: #ede8ffb4;
+}
