@@ -1,0 +1,3 @@
+authMiddleware = (req,res,next)=>{
+
+}
