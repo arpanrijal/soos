@@ -16,7 +16,9 @@ const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 5000
 
-app.use(cors())
+app.use(cors(
+
+))
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -31,5 +33,5 @@ app.use("/uploads", // only upload folder is expose as public hai
 );
 
 app.listen(port,'0.0.0.0',()=>{
-    console.log(`\nServer is running at: \n${process.env.VITE_BACKEND_URL} or \nhttp://${ip}:3000`)
+    console.log(`\nServer is running at: \n${process.env.BACKEND_URL} or \nhttp://${ip}:3000`)
 })
