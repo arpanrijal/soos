@@ -1,14 +1,14 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default ({ mode }) => {
-
-  return defineConfig({
-    plugins: [react()],
+export default defineConfig({
+  plugins: [react()],
+  preview: {
     allowedHosts: [
       'soos-o0d5.onrender.com',
+      'soos-frontend.onrender.com',
       'soos-backend.onrender.com',
       'localhost'
-    ],
-  });
-};
+    ]
+  }
+})
