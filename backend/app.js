@@ -9,6 +9,8 @@ const dotenv = require('dotenv')
 dotenv.config();
 const connectToDB = require('./config/db')
 connectToDB()
+const {FileDB} = require('./config/filedb.connect')
+FileDB()
 const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 5000
