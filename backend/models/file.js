@@ -3,6 +3,9 @@ const fileSchema = new mongoose.Schema({
     filename: {
         type: String,
     },
+    public_id:{
+        type: String,
+    },
     mimetype: {
         type:String,
     },
