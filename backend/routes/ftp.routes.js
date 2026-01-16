@@ -8,6 +8,7 @@ const { year, month, day } = require("../controller/date_and_timehandler")
 const filesizeConverter = require('../controller/bit_to_kb_mb_gb_tb')
 const { FileDB, cloudinary } = require('../config/filedb.connect')
 const UniqueFileNameSetter = require('../controller/filenameSet')
+const resourceType = require('../controller/filetypefinder')
 
 const uploadDir = path.join(__dirname, "..", "public", "data", "uploads")
 
@@ -84,6 +85,7 @@ router.get('/ftp', async (req, res) => {
         const filesDetails = await userModel.find(); //yo "mongoos document"  return garxa so we need to convert it to plain object first then we can able to enumurate through object
         const fileData = filesDetails.map((file) => ({
             ...file.toObject(), fileURL: cloudinary.url(file.public_id, {
+                resource_type: resourceType(file),
                 fetch_format: 'auto',
                 quality: 'auto'
             })
