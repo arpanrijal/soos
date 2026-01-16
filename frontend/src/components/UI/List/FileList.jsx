@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Deletebtn from '../buttons/tasklistbuttons/Deletebtn';
 import Sharebtn from '../buttons/tasklistbuttons/Sharebtn';
-
+import FormateSelector from '../FormatSelector/FormateSelector';
 const FileList = ({ filechange, setFilechange }) => {
   const [files, setFiles] = useState([])
 
@@ -31,11 +31,12 @@ const FileList = ({ filechange, setFilechange }) => {
                 {Array.from(files).toReversed().map(file => (
                   <li key={file._id} className='overflow-hidden bg-white text-black font-semibold my-2 gap-3 rounded-3xl flex justify-between items-center flex-col drop-shadow-lg'>
                     <div className='max-w-7xl'>
-                      <img
+                      {FormateSelector(file)}
+                      {/* <img
                         src={file.fileURL}
                         alt="uploaded image"
                         className='w-[100%] pb-2 h-52 object-cover'
-                      />
+                      /> */}
                       <div className='px-2 text-xl w-[98%] flex flex-wrap break-all overflow-y-auto'>{file.filename.split('-').slice(1).join('-')}</div>
                       <div className='px-2'>
                         <span className='font-thin text-gray-400 text-sm pr-4'>Created at: {file.createdat}</span>
