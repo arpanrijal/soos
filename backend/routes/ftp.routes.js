@@ -84,13 +84,10 @@ router.get('/ftp', async (req, res) => {
     try {
         const filesDetails = await userModel.find(); //yo "mongoos document"  return garxa so we need to convert it to plain object first then we can able to enumurate through object
         const fileData = filesDetails.map((file) => {
-            const type = resourceType(file);
-            console.log(`File: ${file.filename}, Resource type: ${type}`);
-
             return {
                 ...file.toObject(),
                 fileURL: cloudinary.url(file.public_id, {
-                    resource_type: type,
+                    resource_type: resourceType(file),
                     fetch_format: 'auto',
                     quality: 'auto'
                 })
