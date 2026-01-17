@@ -1,16 +1,15 @@
 const resourceType = (file) => {
-    let resourceType = 'image'
+    let resourceType = ''
     if (file.mimetype.startsWith('video/')) {
-        resourceType = 'video'
+        return resourceType = 'video'
     } else if (file.mimetype.startsWith('audio/')) {
-        resourceType = 'video'
-    } else if (file.mimetype === 'application/pdf') {
-        resourceType = 'image'
+        return resourceType = 'video'
+    } else if (file.mimetype.startsWith('application/pdf')) {
+        return resourceType = 'image'
     } else if (file.mimetype.startsWith('image/')) {
-        resourceType = 'image'
+        return resourceType = 'image'
     } else {
-        resourceType = 'raw'
+        return resourceType = 'raw'
     }
-    return resourceType
 }
 module.exports = resourceType
