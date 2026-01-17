@@ -84,18 +84,25 @@ router.get('/ftp', async (req, res) => {
     try {
         const filesDetails = await userModel.find(); //yo "mongoos document"  return garxa so we need to convert it to plain object first then we can able to enumurate through object
         const fileData = filesDetails.map((file) => {
-            const isImage = file.mimetype.startsWith('image/')
+            let isImage = file.mimetype.startsWith('image/')
+            let url = cloudinary.url(file.public_id, {
+                resource_type: resourceType(file),
+                ...(isImage && {
+                    fetch_format: 'auto',
+                    quality: 'auto'
+                })
+            })
             return {
                 ...file.toObject(),
-                fileURL: cloudinary.url(file.public_id, {
-                    resource_type: resourceType(file),
-                    ...(isImage && {
-                        fetch_format: 'auto',
-                        quality: 'auto'
-                    })
-                })
-            };
-        });
+                fileURL: url
+            }
+            console.log(`File: ${file.filename}`);
+            console.log(`Mimetype: ${file.mimetype}`);
+            console.log(`Resource Type: ${type}`);
+            console.log(`Is Image: ${isImage}`);
+            console.log(`URL: ${url}`);
+            console.log('---');
+        })
         res.json({
             fileINFO: fileData,
             isFiles: filesDetails.length === 0, //yo chai file xa vane file natra "no file exist" dekhauna lai send gareko ho hai
