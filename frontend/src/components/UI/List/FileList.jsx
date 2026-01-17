@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Deletebtn from '../buttons/tasklistbuttons/Deletebtn';
 import Sharebtn from '../buttons/tasklistbuttons/Sharebtn';
 import FormateSelector from '../FormatSelector/FormateSelector';
+import Downloadbtn from '../buttons/filetransfer/Download';
 const FileList = ({ filechange, setFilechange }) => {
   const [files, setFiles] = useState([])
 
@@ -40,6 +41,7 @@ const FileList = ({ filechange, setFilechange }) => {
                     </div>
                     <div className='flex h-full w-full justify-center items-center pb-3 pt-3 px-3 gap-5'>
                       <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" />
+                      <Downloadbtn task={file}/>
                       <Sharebtn />
                     </div>
                   </li>
