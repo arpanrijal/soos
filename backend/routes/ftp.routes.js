@@ -9,6 +9,7 @@ const filesizeConverter = require('../controller/bit_to_kb_mb_gb_tb')
 const { FileDB, cloudinary } = require('../config/filedb.connect')
 const UniqueFileNameSetter = require('../controller/filenameSet')
 const resourceType = require('../controller/filetypefinder')
+const { Readable } = require('stream')
 
 const uploadDir = path.join(__dirname, "..", "public", "data", "uploads")
 
@@ -42,7 +43,9 @@ router.post('/ftp', upload.array('uploaded_files', 1000), async (req, res, next)
             const result = await new Promise(async (resolve, reject) => {
                 const fileSize = await filesizeConverter(file.size)
                 const filename = UniqueFileNameSetter(file.originalname)
-                const publicId = path.parse(filename).name
+                const publicId = path.parse(filename).name.trim()
+                console.log(publicId);
+                
                 cloudinary.uploader.upload_stream(
                     {
                         public_id: publicId,
@@ -84,7 +87,7 @@ router.get('/ftp', async (req, res) => {
     try {
         const filesDetails = await userModel.find(); //yo "mongoos document"  return garxa so we need to convert it to plain object first then we can able to enumurate through object
         const fileData = filesDetails.map((file) => {
-            let isImage = file.mimetype.startsWith('image/') || file.mimetype.startsWith('application/pdf') 
+            let isImage = file.mimetype.startsWith('image/') || file.mimetype.startsWith('application/pdf')
             let url = cloudinary.url(file.public_id, {
                 resource_type: resourceType(file),
                 ...(isImage && {
@@ -106,21 +109,43 @@ router.get('/ftp', async (req, res) => {
         res.status(500).send('Server Error');
     }
 })
-router.get('/ftp/download/:id/:value', async (req, res) => {
-    const { id, value } = req.params
+router.get('/ftp/download/:id', async (req, res) => {
+    const { id } = req.params
     try {
         const filedata = await userModel.findById(id)
         if (!filedata) {
             return res.status(404).send("No file found")
         }
-        const filepath = path.join(__dirname, "..", "public", "data", "uploads", value)
-        res.download(filepath, (err) => {
-            if (err) {
-                console.error("Download Error")
-                res.status(500).send("Server error")
-            }
-        })
 
+        let url = cloudinary.url(filedata.public_id, {
+            resource_type: resourceType(filedata),
+            sign_url: true,
+            secure: true,
+            flags: 'attachment',//yo ley download lie force garxa
+            expires_at: Math.floor(Date.now() / 1000) + 3600,
+        })
+        // try { server bata download force garxa but to maintain load we transfer this load to cloudnary server
+            // const response = await fetch(url)
+            // if (!response.ok) {
+            //     throw new Error("something went wrong")
+            // }
+            // const safeFilename = filedata.filename.replace(/[^a-zA-Z0-9._-]/g, '_');
+
+            // const contentType = filedata.mimetype || response.headers.get('content-type') || 'application/octet-stream';
+            // res.setHeader(`Content-Disposition`, `attachment; filename="${safeFilename}"`)
+            // res.setHeader('Content-Type', contentType);
+
+            // Readable.fromWeb(response.body).pipe(res)
+
+            res.status(200).json({
+                downloadUrl: url,
+                filename: filedata.filename,
+                success: true
+            });
+        // } catch (error) {
+        //     console.error('Error downloading remote file:', error);
+        //     res.status(500).send('Error downloading the file.');
+        // }
     } catch (err) {
         console.error("Error with us", err)
         res.status(500).send("Server error")
