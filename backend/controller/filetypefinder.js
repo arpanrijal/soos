@@ -5,7 +5,10 @@ const resourceType = (file) => {
         return 'video'
     } else if (file.mimetype.startsWith('image/')) {
         return 'image'
-    } else {
+    } else if (file.mimetype.startsWith('application/pdf')) {
+        return 'image'
+    }
+    else {
         return 'raw'
     }
 }
