@@ -90,7 +90,6 @@ router.get('/ftp', async (req, res) => {
                 quality: 'auto'
             })
         }))
-        console.log("file info data: ",fileData)
         res.json({
             fileINFO: fileData,
             isFiles: filesDetails.length === 0, //yo chai file xa vane file natra "no file exist" dekhauna lai send gareko ho hai
