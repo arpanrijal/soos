@@ -96,12 +96,6 @@ router.get('/ftp', async (req, res) => {
                 ...file.toObject(),
                 fileURL: url
             }
-            console.log(`File: ${file.filename}`);
-            console.log(`Mimetype: ${file.mimetype}`);
-            console.log(`Resource Type: ${type}`);
-            console.log(`Is Image: ${isImage}`);
-            console.log(`URL: ${url}`);
-            console.log('---');
         })
         res.json({
             fileINFO: fileData,
