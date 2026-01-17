@@ -1,9 +1,7 @@
 import React from 'react';
 
 const format = (file) => {
-    const { mimetype, fileURL, filename } = file;
-    console.log(mimetype);
-    
+    const { mimetype, fileURL, filename } = file;    
     if (mimetype.startsWith("image/")) {
         return (
             <img
