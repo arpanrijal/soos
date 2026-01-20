@@ -33,15 +33,15 @@ const FileList = ({ filechange, setFilechange }) => {
                   <li key={file._id} className='overflow-hidden bg-white text-black font-semibold my-2 gap-3 rounded-3xl flex justify-between items-center flex-col drop-shadow-lg'>
                     <div className='max-w-7xl'>
                       {FormateSelector(file)}
-                      <div className='px-2 text-xl w-[98%] flex flex-wrap break-all overflow-y-auto'>{file.filename.split('-').slice(1).join('-')}</div>
+                      <div className='p-2 text-xl w-[98%] truncate'>{file.filename.split('-').slice(1).join('-')}</div>
                       <div className='px-2'>
                         <span className='font-thin text-gray-400 text-sm pr-4'>Created at: {file.createdat}</span>
                         <span className='font-thin text-gray-400 text-sm pr-4'>Size: {file.size}<span className='font-thin text-gray-400 text-sm pr-4'> {file.size_text}</span></span>
                       </div>
                     </div>
-                    <div className='flex h-full w-full justify-center items-center pb-3 pt-3 px-3 gap-5'>
-                      <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" />
+                    <div className='flex h-full w-full justify-center items-center pb-3 pt-3 px-2 gap-2'>
                       <Downloadbtn task={file}/>
+                      <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" />
                       <Sharebtn />
                     </div>
                   </li>

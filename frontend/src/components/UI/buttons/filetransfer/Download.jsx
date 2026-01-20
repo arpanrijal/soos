@@ -1,4 +1,5 @@
 import React from "react";
+import { Download } from 'lucide-react';
 
 const Downloadbtn = ({ task }) => {
   const handleDownload = () => {
@@ -8,10 +9,9 @@ const Downloadbtn = ({ task }) => {
 
   return (
     <button
-      className="px-5 py-3 bg-[#e0fae6bd] text-[#00c261] rounded-md"
+      className="p-2 w-[80%] h-10 bg-[#e0fae6bd] text-[#00c261] rounded-md flex flex-row justify-center items-center gap-1"
       onClick={handleDownload}
-    >
-      Download
+    ><Download size={25} /> Download
     </button>
   );
 };

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Trash } from 'lucide-react';
 
 const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange }) => {
     const deleteTask = async (task, sendStatus_file_or_todo) => {
@@ -30,7 +31,7 @@ const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange })
 
     return (
         <>
-            <button className='px-5 py-3 ml-3 w-full bg-[#ffeaeac2] text-[#d10000] rounded-md' onClick={() => { deleteTask(task, sendStatus_file_or_todo) }}>Delete</button>
+            <button className='p-2 w-10 h-10 bg-[#ffeaeac2] text-[#d10000] rounded-md flex flex-row justify-center items-center ' onClick={() => { deleteTask(task, sendStatus_file_or_todo) }}><Trash size={25}/></button>
         </>
     )
 }
