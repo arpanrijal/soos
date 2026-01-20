@@ -19,16 +19,6 @@ if (!fs.existsSync(uploadDir)) {
     });
 }
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, `${uploadDir}`)
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + "-" + `${file.originalname}`);
-//     }
-// });
-// const upload = multer({ storage: storage })
-
 const upload = multer({
     storage: multer.memoryStorage(),
     limits: {
@@ -44,8 +34,6 @@ router.post('/ftp', upload.array('uploaded_files', 1000), async (req, res, next)
                 const fileSize = await filesizeConverter(file.size)
                 const filename = UniqueFileNameSetter(file.originalname)
                 const publicId = path.parse(filename).name.trim()
-                console.log(publicId);
-                
                 cloudinary.uploader.upload_stream(
                     {
                         public_id: publicId,
@@ -68,6 +56,7 @@ router.post('/ftp', upload.array('uploaded_files', 1000), async (req, res, next)
                                 shareid: null,
                                 status_file_or_todo: "file",
                             })
+                            isFile = false
                         }
                     }
                 ).end(file.buffer);
@@ -116,36 +105,36 @@ router.get('/ftp/download/:id', async (req, res) => {
         if (!filedata) {
             return res.status(404).send("No file found")
         }
-
+        const safeFilename = filedata.filename.replace(/^\d+-/, "").trim();
         let url = cloudinary.url(filedata.public_id, {
             resource_type: resourceType(filedata),
             sign_url: true,
             secure: true,
-            flags: 'attachment',//yo ley download lie force garxa
             expires_at: Math.floor(Date.now() / 1000) + 3600,
         })
-        // try { server bata download force garxa but to maintain load we transfer this load to cloudnary server
-            // const response = await fetch(url)
-            // if (!response.ok) {
-            //     throw new Error("something went wrong")
-            // }
-            // const safeFilename = filedata.filename.replace(/[^a-zA-Z0-9._-]/g, '_');
+        try { //server bata download force garxa but to maintain load we transfer this load to cloudnary server
+            const response = await fetch(url)
+            if (!response.ok) {
+                throw new Error("something went wrong")
+            }
+            const contentType = filedata.mimetype || response.headers.get('content-type') || 'application/octet-stream';
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename="${safeFilename}"`
+            ); res.setHeader(
+                "Content-Type",
+                contentType
+            );
+            const contentLength = response.headers.get("content-length")
+            if (contentLength) {
+                res.setHeader("Content-Length", contentLength);
+            }
 
-            // const contentType = filedata.mimetype || response.headers.get('content-type') || 'application/octet-stream';
-            // res.setHeader(`Content-Disposition`, `attachment; filename="${safeFilename}"`)
-            // res.setHeader('Content-Type', contentType);
-
-            // Readable.fromWeb(response.body).pipe(res)
-
-            res.status(200).json({
-                downloadUrl: url,
-                filename: filedata.filename,
-                success: true
-            });
-        // } catch (error) {
-        //     console.error('Error downloading remote file:', error);
-        //     res.status(500).send('Error downloading the file.');
-        // }
+            Readable.fromWeb(response.body).pipe(res)
+        } catch (error) {
+            console.error('Error downloading remote file:', error);
+            res.status(500).send('Error downloading the file.');
+        }
     } catch (err) {
         console.error("Error with us", err)
         res.status(500).send("Server error")
