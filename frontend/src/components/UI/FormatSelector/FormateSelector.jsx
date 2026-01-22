@@ -46,80 +46,64 @@ const format = (file) => {
                 </video>
             );
         } else
-
-            if (mimetype === "application/pdf") {
+            if (
+                mimetype.includes("word") ||
+                mimetype.includes("presentation") ||
+                mimetype.includes("sheet") ||
+                filename.endsWith(".doc") ||
+                filename.endsWith(".docx") ||
+                filename.endsWith(".ppt") ||
+                filename.endsWith(".pptx") ||
+                filename.endsWith(".xls") ||
+                filename.endsWith(".xlsx") ||
+                filename.endsWith(".csv")
+            ) {
                 return (
-                    <div className="relative max-w-7xl">
-                        <img
-                            src={fileURL}
-                            alt={filename}
-                            className="w-full h-48 object-cover rounded-xl"
-                        />
-                        <span className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                            PDF
+                    <div className="flex max-w-7xl flex-col items-center justify-center h-48 bg-gray-50 rounded-xl">
+                        <svg className="w-14 h-14 text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span className="text-sm text-gray-600 font-medium">
+                            {filename.endsWith(".ppt") || filename.endsWith(".pptx")
+                                ? "Presentation"
+                                : filename.endsWith(".xls") || filename.endsWith(".xlsx")
+                                    ? "Excel Spreadsheet"
+                                    : filename.endsWith(".csv")
+                                        ? "CSV File"
+                                        : filename.endsWith(".doc") || filename.endsWith(".docx")
+                                            ? "Word Document"
+                                            : mimetype.includes("presentation")
+                                                ? "Presentation"
+                                                : mimetype.includes("sheet")
+                                                    ? "Spreadsheet"
+                                                    : "Document"}
                         </span>
                     </div>
                 );
             } else
 
-                if (
-                    mimetype.includes("word") ||
-                    mimetype.includes("presentation") ||
-                    mimetype.includes("sheet") ||
-                    filename.endsWith(".doc") ||
-                    filename.endsWith(".docx") ||
-                    filename.endsWith(".ppt") ||
-                    filename.endsWith(".pptx") ||
-                    filename.endsWith(".xls") ||
-                    filename.endsWith(".xlsx") ||
-                    filename.endsWith(".csv")
-                ) {
+                if (filename.endsWith(".apk")) {
                     return (
                         <div className="flex max-w-7xl flex-col items-center justify-center h-48 bg-gray-50 rounded-xl">
-                            <svg className="w-14 h-14 text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-14 h-14 text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    d="M12 2v4m-4 4h8m-6 6h4" />
                             </svg>
-                            <span className="text-sm text-gray-600 font-medium">
-                                {filename.endsWith(".ppt") || filename.endsWith(".pptx")
-                                    ? "Presentation"
-                                    : filename.endsWith(".xls") || filename.endsWith(".xlsx")
-                                        ? "Excel Spreadsheet"
-                                        : filename.endsWith(".csv")
-                                            ? "CSV File"
-                                            : filename.endsWith(".doc") || filename.endsWith(".docx")
-                                                ? "Word Document"
-                                                : mimetype.includes("presentation")
-                                                    ? "Presentation"
-                                                    : mimetype.includes("sheet")
-                                                        ? "Spreadsheet"
-                                                        : "Document"}
-                            </span>
+                            <span className="text-sm text-gray-600 font-medium">Android App</span>
                         </div>
                     );
                 } else
 
-                    if (filename.endsWith(".apk")) {
+                    if (mimetype.startsWith("image/") || mimetype.startsWith("application/pdf")) {
                         return (
-                            <div className="flex max-w-7xl flex-col items-center justify-center h-48 bg-gray-50 rounded-xl">
-                                <svg className="w-14 h-14 text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                                        d="M12 2v4m-4 4h8m-6 6h4" />
-                                </svg>
-                                <span className="text-sm text-gray-600 font-medium">Android App</span>
-                            </div>
+                            <img
+                                src={fileURL}
+                                alt={filename}
+                                className="w-full max-w-7xl h-48 object-contain rounded-xl"
+                            />
                         );
-                    } else
-
-                        if (mimetype.startsWith("image/")) {
-                            return (
-                                <img
-                                    src={fileURL}
-                                    alt={filename}
-                                    className="w-full max-w-7xl h-48 object-cover rounded-xl"
-                                />
-                            );
-                        }
+                    }
 
     return (
         <div className="flex max-w-7xl flex-col items-center justify-center h-48 bg-gray-50 rounded-xl">

@@ -23,8 +23,8 @@ const FileList = ({ filechange, setFilechange }) => {
 
   return (
     <>
-      <div className='w-full px-5 mt-12 pb-5'>
-        <div className='bg-[#ede8ffb4] rounded-xl w-full p-5 flex justify-center items-start flex-col'>
+      <div className='w-screen h-screen px-2 mt-12 pb-5'>
+        <div className='bg-[#ede8ffb4] rounded-xl w-full p-1 flex justify-center items-start flex-col'>
           <h2 className='font-semibold text-xl'>File List</h2>
           {files.length != 0 ? (
             <ul>
@@ -33,7 +33,7 @@ const FileList = ({ filechange, setFilechange }) => {
                   <li key={file._id} className='overflow-hidden bg-white text-black font-semibold my-2 gap-3 rounded-3xl flex justify-between items-center flex-col drop-shadow-lg'>
                     <div className='max-w-7xl'>
                       {FormateSelector(file)}
-                      <div className='p-2 text-xl w-[98%] truncate'>{file.filename.split('-').slice(1).join('-')}</div>
+                      <div className='p-2 text-xl w-[68%] truncate'>{file.filename.split('-').slice(1).join('-')}</div>
                       <div className='px-2'>
                         <span className='font-thin text-gray-400 text-sm pr-4'>Created at: {file.createdat}</span>
                         <span className='font-thin text-gray-400 text-sm pr-4'>Size: {file.size}<span className='font-thin text-gray-400 text-sm pr-4'> {file.size_text}</span></span>

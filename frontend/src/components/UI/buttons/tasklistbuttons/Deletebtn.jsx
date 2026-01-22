@@ -15,9 +15,9 @@ const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange })
                 console.error("Error During Deleting Task")
             }
         }
-        if (sendStatus_file_or_todo === "file") {
+        if (sendStatus_file_or_todo === "file") {            
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ftp/deletefile/${task._id}/${task.filename}`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ftp/deletefile?_id=${task._id}&public_id=${task.public_id}&mimetype=${task.mimetype}`, {
                     method: 'DELETE'
                 })
                 if (response.ok) {
