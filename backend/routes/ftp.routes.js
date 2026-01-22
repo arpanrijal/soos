@@ -79,9 +79,16 @@ router.get('/ftp', async (req, res) => {
             let isImage = file.mimetype.startsWith('image/') || file.mimetype.startsWith('application/pdf')
             let url = cloudinary.url(file.public_id, {
                 resource_type: resourceType(file),
+                transformation: [
+                    {
+                        width: 600,
+                        height: 400,
+                        crop: 'limit'
+                    }
+                ],
                 ...(isImage && {
                     fetch_format: 'auto',
-                    quality: 'auto'
+                    quality: 'auto:good'
                 })
             })
             return {
@@ -140,17 +147,14 @@ router.get('/ftp/download/:id', async (req, res) => {
         res.status(500).send("Server error")
     }
 })
-router.delete('/ftp/deletefile/:id/:value', async (req, res) => {
-    const { id, value } = req.params
-    console.log(req.params)
+router.delete('/ftp/deletefile', async (req, res) => {
+    const file = req.query
+    const { _id, public_id } = file
     try {
-        await userModel.findByIdAndDelete(id)
-        const filepath = path.join(__dirname, "..", "public", "data", "uploads", value)
-        fs.unlink(filepath, (err) => {
-            if (err) {
-                console.error('Error occured during file deletion', err)
-            }
+        await cloudinary.uploader.destroy(public_id, {
+            resource_type: resourceType(file)
         })
+        await userModel.findByIdAndDelete(_id)
         res.send({
             sucess: true,
         })
