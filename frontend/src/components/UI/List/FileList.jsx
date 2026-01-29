@@ -3,7 +3,7 @@ import Deletebtn from '../buttons/tasklistbuttons/Deletebtn';
 import Sharebtn from '../buttons/tasklistbuttons/Sharebtn';
 import FormateSelector from '../FormatSelector/FormateSelector';
 import Downloadbtn from '../buttons/filetransfer/Download';
-const FileList = ({ filechange, setFilechange }) => {
+const FileList = ({ filechange, setFilechange, setisshareTabVisible ,setshareLink }) => {
   const [files, setFiles] = useState([])
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const FileList = ({ filechange, setFilechange }) => {
                     <div className='flex h-full w-full justify-center items-center pb-3 pt-3 px-2 gap-2'>
                       <Downloadbtn task={file}/>
                       <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" />
-                      <Sharebtn />
+                      <Sharebtn task={file} sendStatus_file_or_todo="file" setisshareTabVisible={setisshareTabVisible} setshareLink={setshareLink}/>
                     </div>
                   </li>
                 ))}

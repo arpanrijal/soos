@@ -51,7 +51,8 @@ const AddFileBox = ({ setFilechange }) => {
         method: 'POST',
         body: formData,
       })
-      if (!response.ok) {
+      const result = await response.json()
+      if (result.status === "failed") {
         throw new Error("Failed to upload File")
       } else {
         setFilechange(prev => !prev)//yo chai file list component lai update garna lai ho

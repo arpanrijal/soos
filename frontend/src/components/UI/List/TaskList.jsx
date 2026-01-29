@@ -69,7 +69,7 @@ const TaskList = ({ changes, setChanges }) => {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className='flex h-full items-center'>
+                                        <div className='flex h-full items-center gap-3'>
                                             {editbuttonclicked === task._id ? (
                                                 <>
                                                     <Updatebtn task={task} setEditbuttonclicked={setEditbuttonclicked} setClickedTask={setClickedTask} clickedTask={clickedTask} setEdittakisemptyalert={setEdittakisemptyalert} setChanges={setChanges} />
