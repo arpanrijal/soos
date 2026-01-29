@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fastify/busboy": "^3.2.0",
     "basic-ftp": "^5.0.5",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
@@ -20,7 +21,6 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "mongoose": "^8.16.1",
-    "morgan": "^1.10.0",
-    "multer": "^2.0.1"
+    "morgan": "^1.10.0"
   }
 }

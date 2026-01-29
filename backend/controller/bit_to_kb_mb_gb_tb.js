@@ -1,6 +1,6 @@
 function filesizeConverter(size_in_bit) {
     let truncateNum = size_in_bit.toString().length
-    console.log(truncateNum, size_in_bit, "FILE SIZE CONVERTER")
+    // console.log(truncateNum, size_in_bit, "FILE SIZE CONVERTER")
     if (truncateNum < 6) {
         data = {
             sizedata: (size_in_bit / 1024).toFixed(2),
@@ -50,7 +50,6 @@ function filesizeConverter(size_in_bit) {
         }
         return data
     }
-    console.log(size_in_bit)
 }
 
 module.exports = filesizeConverter;

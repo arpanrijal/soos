@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const multer = require('multer')
-const fs = require('fs')
+const busboy = require('@fastify/busboy')
 const path = require('path')
 const userModel = require('../models/file')
 const { year, month, day } = require("../controller/date_and_timehandler")
@@ -10,65 +9,67 @@ const { FileDB, cloudinary } = require('../config/filedb.connect')
 const UniqueFileNameSetter = require('../controller/filenameSet')
 const resourceType = require('../controller/filetypefinder')
 const { Readable } = require('stream')
+const { randomUUID } = require('crypto');
+const { log } = require('console');
 
-const uploadDir = path.join(__dirname, "..", "public", "data", "uploads")
-
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdir(uploadDir, { recursive: true }, (err) => {
-        if (err) throw err
-    });
-}
-
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 100 * 1024 * 1024
-    }
-})
-
-router.post('/ftp', upload.array('uploaded_files', 1000), async (req, res, next) => {
-    const results = []
+router.post('/ftp', async (req, res, next) => {
     try {
-        for (const file of req.files) {
-            const result = await new Promise(async (resolve, reject) => {
-                const fileSize = await filesizeConverter(file.size)
-                const filename = UniqueFileNameSetter(file.originalname)
-                const publicId = path.parse(filename).name.trim()
-                cloudinary.uploader.upload_stream(
-                    {
-                        public_id: publicId,
-                        resource_type: "auto"
-                    },
-                    async (error, result) => {
-                        if (error) {
-                            reject(error);
-                        }
-                        else {
-                            resolve(result)
-                            await userModel.create({
-                                filename: filename,
-                                public_id: result.public_id,
-                                mimetype: file.mimetype,
-                                size: `${fileSize.sizedata}`,
-                                size_text: `${fileSize.state}`,
-                                createdat: `${year}-${month}-${day}`,
-                                updatedat: null,
-                                shareid: null,
-                                status_file_or_todo: "file",
-                            })
-                            isFile = false
-                        }
-                    }
-                ).end(file.buffer);
+        let fileSize = 0;
+        const bb = new busboy({ headers: req.headers })
+        bb.on('file', (fieldname, file, info, encoding, mimetype) => {
+            const filename = UniqueFileNameSetter(info)
+            const publicId = path.parse(info).name.trim()
+
+            file.on('data', (data) => {
+                fileSize += data.length
             })
-            results.push(result);
-        }
-        res.status(200).json({
-            message: "Files uploaded to Cloudinary successfully",
-        });
+            const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                    public_id: publicId,
+                    resource_type: "auto"
+                }, async (error, result) => {
+                    if (error) {
+                        res.status(500).json({ status: "failed", message: "something went wrong" })
+                        return
+                    }
+                    try {
+                        fileSize = await filesizeConverter(fileSize)
+                        await userModel.create({
+                            filename: filename,
+                            public_id: publicId,
+                            mimetype: mimetype,
+                            size: `${fileSize.sizedata}`,
+                            size_text: `${fileSize.state}`,
+                            createdat: `${year}-${month}-${day}`,
+                            updatedat: null,
+                            shareid: {
+                                public_id: randomUUID(),
+                                private_id: {
+                                    id: randomUUID(),
+                                    users: {
+                                        username: "",
+                                        limit: null
+                                    }
+                                }
+                            },
+                            status_file_or_todo: "file",
+                        })
+                        res.status(200).json({ status: "success", message: 'Upload complete' });
+                    } catch (error) {
+                        console.error('Database error:', error);
+                        res.status(500).json({
+                            status: "failed",
+                            message: "Database save failed"
+                        });
+                    }
+
+                })
+            file.pipe(uploadStream)
+        })
+        req.pipe(bb);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Upload failed" });
+        res.status(500).json({ status: "failed", message: "Upload failed" });
     }
 })
 
@@ -161,6 +162,28 @@ router.delete('/ftp/deletefile', async (req, res) => {
     } catch (err) {
         console.error("Error with us", err)
         res.status(500).send("Server error")
+    }
+})
+
+router.get('/share/:id/:stat', async (req,res)=> {
+    const {id, stat} = req.params
+    try{
+        const result = await userModel.findById(id).select('+shareid')
+        if(!result){
+            res.status(500).json({status: 'failed', message:"filed to get share id"})
+            return
+        }
+        if(stat === 'public'){
+            res.status(200).json({status:'success', shareLink: result.shareid.public_id})
+            return
+        }
+        if(stat === 'private'){
+            res.status(200).json({status:'success', shareLink: result.shareid.private_id.id})
+            return
+        }
+    } catch(err){
+        throw err
+
     }
 })
 
