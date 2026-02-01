@@ -3,9 +3,10 @@ import Addtaskbtn from '../buttons/addtaskbtn/Addtaskbtn';
 
 const AddTaskBox = ({setChanges}) => {
     const [input, setinput] = useState("")
-
+    const[btnLoad, setbtnLoad] = useState(false)
     const formsubmitter = async (e) => {
         e.preventDefault();
+        setbtnLoad(true)
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}`, {
                 method: 'POST',
@@ -15,17 +16,16 @@ const AddTaskBox = ({setChanges}) => {
                 body: JSON.stringify({ todotask: input }) //server ma const {todotask} = req.body
             })
             if (!response.ok) {
+                setbtnLoad(false)
                 throw new Error("Something went wrong sending data");
             }
             setinput("")
+            setbtnLoad(false)
             setChanges(prev => !prev)
         } catch (error) {
+            setbtnLoad(false)
             console.error('Error adding task:', error);
         }
-    }
-
-    function formhandler(e) {
-        setinput(e.target.value)
     }
     return (
         <>
@@ -40,10 +40,10 @@ const AddTaskBox = ({setChanges}) => {
                             name="todotask"
                             required
                             value={input}
-                            onChange={formhandler}
+                            onChange={(e)=>{setinput(e.target.value)}}
                             placeholder="To buy fry pan for cooking..."
                         />
-                        <Addtaskbtn />
+                        <Addtaskbtn btnLoad={btnLoad}/>
                     </form>
                 </div>
             </div>

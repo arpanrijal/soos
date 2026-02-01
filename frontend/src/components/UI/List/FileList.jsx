@@ -5,6 +5,7 @@ import FormateSelector from '../FormatSelector/FormateSelector';
 import Downloadbtn from '../buttons/filetransfer/Download';
 const FileList = ({ filechange, setFilechange, setisshareTabVisible ,setshareLink }) => {
   const [files, setFiles] = useState([])
+  const[btnLoad, setbtnLoad] = useState(false)
 
   useEffect(() => {
     const listHandler = async () => {
@@ -40,9 +41,9 @@ const FileList = ({ filechange, setFilechange, setisshareTabVisible ,setshareLin
                       </div>
                     </div>
                     <div className='flex h-full w-full justify-center items-center pb-3 pt-3 px-2 gap-2'>
-                      <Downloadbtn task={file}/>
-                      <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" />
-                      <Sharebtn task={file} sendStatus_file_or_todo="file" setisshareTabVisible={setisshareTabVisible} setshareLink={setshareLink}/>
+                      <Downloadbtn task={file} btnLoad={btnLoad} setbtnLoad={setbtnLoad}/>
+                      <Deletebtn task={file} setFilechange={setFilechange} sendStatus_file_or_todo="file" btnLoad={btnLoad} setbtnLoad={setbtnLoad}/>
+                      <Sharebtn task={file} sendStatus_file_or_todo="file" setisshareTabVisible={setisshareTabVisible} setshareLink={setshareLink} />
                     </div>
                   </li>
                 ))}

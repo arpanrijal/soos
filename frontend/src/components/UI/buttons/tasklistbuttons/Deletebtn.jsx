@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Trash } from 'lucide-react';
+import LoadingAnimation from '../../InputBox/LoadingAnimation';
 
-const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange }) => {
+const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange, btnLoad, setbtnLoad }) => {
     const deleteTask = async (task, sendStatus_file_or_todo) => {
+        setbtnLoad(true)
         if (sendStatus_file_or_todo === "tasktodo") {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/delete/${task._id}`, {
@@ -10,8 +12,10 @@ const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange })
                 })
                 if (response.ok) {
                     setChanges(prev => !prev)
+                    setbtnLoad(false)
                 }
             } catch (error) {
+                setbtnLoad(false)
                 console.error("Error During Deleting Task")
             }
         }
@@ -22,8 +26,10 @@ const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange })
                 })
                 if (response.ok) {
                     setFilechange(prev => !prev)
+                    setbtnLoad(false)
                 }
             } catch (error) {
+                setbtnLoad(false)
                 console.error("Error During Deleting Task")
             }
         }
@@ -31,7 +37,7 @@ const Deletebtn = ({ task, setChanges, sendStatus_file_or_todo, setFilechange })
 
     return (
         <>
-            <button className='p-2 w-10 h-10 bg-[#ffeaeac2] text-[#d10000] rounded-md flex flex-row justify-center items-center ' onClick={() => { deleteTask(task, sendStatus_file_or_todo) }}><Trash size={25}/></button>
+            <button className={`p-2 w-10 h-10 rounded-md flex flex-row justify-center items-center ${btnLoad ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF]' : 'bg-[#ffeaeac2] text-[#d10000]'}`} onClick={() => { deleteTask(task, sendStatus_file_or_todo) }}>{btnLoad ? <LoadingAnimation/> :<Trash size={25}/>}</button>
         </>
     )
 }
