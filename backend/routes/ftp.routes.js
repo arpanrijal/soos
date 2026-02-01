@@ -17,6 +17,7 @@ router.post('/ftp', async (req, res, next) => {
         let fileSize = 0;
         const bb = new busboy({ headers: req.headers })
         bb.on('file', (fieldname, file, info, encoding, mimetype) => {
+            
             const filename = UniqueFileNameSetter(info)
             const publicId = path.parse(info).name.trim()
 
@@ -26,7 +27,7 @@ router.post('/ftp', async (req, res, next) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     public_id: publicId,
-                    resource_type: "auto"
+                    resource_type: "auto",
                 }, async (error, result) => {
                     if (error) {
                         res.status(500).json({ status: "failed", message: "something went wrong" })
