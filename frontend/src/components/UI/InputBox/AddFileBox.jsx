@@ -120,7 +120,7 @@ const AddFileBox = ({ setFilechange }) => {
                             uploadHandler(false, file.fileINFO);
                           }
                         }>{buttonLoader && <LoadingAnimation />}Upload File</button>
-                      <button className={`py-3 flex flex-row justify-center items-center gap-3 rounded-xl mt-2 w-[90%] font-medium text-red-500 text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF]' : 'bg-red-300 hover:cursor-pointer'}`}
+                      <button className={`py-3 flex flex-row justify-center items-center gap-3 rounded-xl mt-2 w-[90%] font-medium text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF]' : 'bg-red-300 hover:cursor-pointer text-red-500'}`}
                         disabled={buttonLoader}
                         onClick={
                           () => {
@@ -132,12 +132,12 @@ const AddFileBox = ({ setFilechange }) => {
                 )}
                 {uploadFile.length > 7 && (
                   <div className='flex gap-2 p-4 items-center justify-center w-[100%]'>
-                    <button className={`py-3 flex flex-row gap-3 px-2 justify-center items-center rounded-xl mt-2  font-medium text-[#0077ff] text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF]' : 'bg-[#abcef7] hover:cursor-pointer'}`}
+                    <button className={`py-3 flex flex-row gap-3 px-2 justify-center items-center rounded-xl mt-2  font-medium text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF]' : 'bg-[#abcef7] hover:cursor-pointer text-[#0077ff]'}`}
                       disabled={buttonLoader}
                       onClick={() => {
                         uploadHandler(true);
                       }}>{buttonLoader && <LoadingAnimation />}Upload All Files</button>
-                    <button className={`py-3 flex flex-row gap-3 px-2 justify-center items-center rounded-xl mt-2 font-medium text-red-500 text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF3' : 'bg-red-300 hover:cursor-pointer'}`}
+                    <button className={`py-3 flex flex-row gap-3 px-2 justify-center items-center rounded-xl mt-2 font-medium text-center ${buttonLoader ? 'bg-[#E5E7EB] cursor-not-allowed text-[#9CA3AF3' : 'bg-red-300 hover:cursor-pointer text-red-500'}`}
                       disabled={buttonLoader}
                       onClick={() => {
                         removefilehandler(-1);
