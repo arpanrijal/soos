@@ -1,3 +1,0 @@
-authMiddleware = (req,res,next)=>{
-
-}
