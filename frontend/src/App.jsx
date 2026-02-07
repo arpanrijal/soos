@@ -1,7 +1,6 @@
-import LoginPage from '../src/components/Auth/LoginPage';
+import LoginPage from './components/Auth/SignUpPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
-import Dashboard from './components/UI/Dashboard';
 
 const App = () => {
   return (

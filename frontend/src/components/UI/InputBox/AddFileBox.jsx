@@ -44,6 +44,7 @@ const AddFileBox = ({ setFilechange }) => {
   }
 
   const uploadHandler = async (UploadAllfile = false, filename = null) => {
+    console.log("upload file hai")
     const formData = new FormData()
     if (UploadAllfile) {
       setbuttonLoader(true)
